@@ -1,10 +1,10 @@
 <#
 .Synopsis
-    Construct a Digital Forensics and Incident Response (DFIR) lab.
+    Construct a Digital Forensics and Incident Response (DFIR) VM.
 .DESCRIPTION
-    Sets up Windows and deploys software essential for a DFIR lab.
+    Sets up Windows and deploys software essential for a DFIR VM.
 .EXAMPLE
-    PS C:\> .\Setup-DFIRLab.ps1
+    PS C:\> .\AutoVMCreator.ps1
 #>
 
 # Script Parameters
@@ -16,7 +16,20 @@ param(
     [string]$OOShutup_URL = "https://dl5.oo-software.com/files/ooshutup10/OOSU10.exe",
     [string]$OOShutupConfig_URL = "https://raw.githubusercontent.com/netsecninja/DFIR-Lab/main/ooshutup10.cfg",
     [string]$Chocolatey_URL = "https://community.chocolatey.org/install.ps1",
-    #... [add the rest of the URLs here]
+    [string]$EZTools_URL = "https://f001.backblazeb2.com/file/EricZimmermanTools/Get-ZimmermanTools.zip",
+    [string]$KAPE_URL = "https://s3.amazonaws.com/cyb-us-prd-kape/kape.zip",
+    [string]$RegRipper_URL = "https://github.com/keydet89/RegRipper3.0/archive/refs/heads/master.zip",
+    [string]$TlnTools_URL = "https://github.com/keydet89/Tools/archive/refs/heads/master.zip",
+    [string]$KAPETimelineTools_URL = "https://github.com/mdegrazia/KAPE_Tools/archive/refs/heads/master.zip",
+    [string]$FTKImager_URL = "https://ad-exe.s3.amazonaws.com/Imgr/AccessData_FTK_Imager_4.7.0.19.exe",
+    [string]$AIM_URL = "https://arsenalrecon.com/downloads/",
+    [string]$VolWin_URL = "https://downloads.volatilityfoundation.org/volatility3/symbols/windows.zip",
+    [string]$VolMac_URL = "https://downloads.volatilityfoundation.org/volatility3/symbols/mac.zip",
+    [string]$VolLin_URL = "https://downloads.volatilityfoundation.org/volatility3/symbols/linux.zip",
+    [string]$CyberChef_URL = "https://gchq.github.io/CyberChef",
+    [string]$Floss_URL = "https://github.com/mandiant/flare-floss/releases/latest",
+    [string]$PEDetective_URL = "https://ntcore.com/files/PE_Detective.zip",
+    [string]$PEbear_URL = "https://github.com/hasherezade/pe-bear-releases/releases/latest"
 )
 
 function DownloadAndRun($url, $output) {
@@ -26,7 +39,8 @@ function DownloadAndRun($url, $output) {
 
 function ConfigureWindows {
     Write-Output "Setting up Time Zone..."
-    Set-TimeZone "Mountain Standard Time"
+    Set-TimeZone "UTC"
+    # set your own timezone, use command "Get-TimeZone -ListAvailable" to check your timezone
 
     Write-Output "Creating Tools directory at $ToolPath..."
     New-Item $ToolPath -ItemType Directory -Force | Out-Null
